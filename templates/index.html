@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="BlockVote — A production-ready blockchain e-voting system with SHA-256 cryptographic hashing, proof-of-work consensus, and Supabase authentication for secure, transparent elections.">
+    <title>BlockVote — Blockchain E-Voting System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗳️</text></svg>">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+
+<body>
+
+    <!-- Floating particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <!-- ═══ Navigation ═══ -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <div class="brand-icon">
+                <i data-lucide="vote" stroke-width="2.5"></i>
+            </div>
+            <span>BlockVote</span>
+        </a>
+        <ul class="navbar-links">
+            <li><a href="/" class="active">
+                    <i data-lucide="home"></i> <span>Home</span>
+                </a></li>
+            <li><a href="/admin">
+                    <i data-lucide="shield"></i> <span>Admin</span>
+                </a></li>
+            <li><a href="/voter" class="btn btn-primary btn-sm" style="margin-left:4px;">
+                    <i data-lucide="check-square"></i> <span>Vote Now</span>
+                </a></li>
+        </ul>
+    </nav>
+
+    <!-- ═══ Hero Section ═══ -->
+    <section class="hero container">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Secured by Blockchain Technology
+        </div>
+
+        <h1>
+            Tamper-Proof Elections<br>
+            <span class="gradient-text">Powered by Blockchain</span>
+        </h1>
+
+        <p class="subtitle">
+            Every ballot is cryptographically sealed with SHA-256 hashing and mined
+            into an immutable proof-of-work chain — transparent, verifiable, and impossible to alter.
+        </p>
+
+        <div class="hero-actions">
+            <a href="/voter" class="btn btn-primary btn-lg">
+                <i data-lucide="check-square"></i> Cast Your Vote
+            </a>
+            <a href="/admin" class="btn btn-secondary btn-lg">
+                <i data-lucide="layout-dashboard"></i> Admin Dashboard
+            </a>
+        </div>
+
+        <div class="hero-tech">
+            <span class="tech-badge"><i data-lucide="hexagon"></i> Blockchain</span>
+            <span class="tech-badge"><i data-lucide="lock"></i> SHA-256</span>
+            <span class="tech-badge"><i data-lucide="database"></i> Supabase</span>
+            <span class="tech-badge"><i data-lucide="server"></i> Flask API</span>
+            <span class="tech-badge"><i data-lucide="shield-check"></i> PoW Consensus</span>
+        </div>
+    </section>
+
+    <!-- ═══ Features ═══ -->
+    <section class="container" style="padding-top: 20px;">
+        <div class="section-header">
+            <div class="overline">
+                <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+                Core Features
+            </div>
+            <h2>Built for Trust &amp; Transparency</h2>
+            <p>Every component is engineered to ensure election integrity, from cryptographic hashing to database-level
+                security.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="glass-card feature-card">
+                <div class="feature-icon-wrap indigo">
+                    <i data-lucide="link"></i>
+                </div>
+                <h3>Immutable Blockchain</h3>
+                <p>Every vote is mined into a proof-of-work block with SHA-256 hashing. Once recorded, votes cannot be
+                    altered, deleted, or tampered with.</p>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon-wrap rose">
+                    <i data-lucide="shield-ban"></i>
+                </div>
+                <h3>Double-Vote Prevention</h3>
+                <p>Database-enforced UNIQUE constraints guarantee each voter can only cast one ballot. Duplicate
+                    attempts are automatically rejected at every layer.</p>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon-wrap emerald">
+                    <i data-lucide="badge-check"></i>
+                </div>
+                <h3>Vote Verification</h3>
+                <p>Voters receive a unique blockchain hash as a digital receipt. Verify your vote's existence and
+                    integrity on the chain at any time.</p>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon-wrap cyan">
+                    <i data-lucide="bar-chart-3"></i>
+                </div>
+                <h3>Real-Time Results</h3>
+                <p>Election results update instantly as votes are cast. Monitor live turnout percentages, candidate
+                    standings, and chain statistics.</p>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon-wrap amber">
+                    <i data-lucide="key-round"></i>
+                </div>
+                <h3>Role-Based Security</h3>
+                <p>Separate admin and voter interfaces with Supabase Auth. Row-Level Security policies enforce data
+                    isolation at the database level.</p>
+            </div>
+
+            <div class="glass-card feature-card">
+                <div class="feature-icon-wrap violet">
+                    <i data-lucide="zap"></i>
+                </div>
+                <h3>High Performance</h3>
+                <p>Built with Flask and optimized queries. Vote submission under 500ms, results under 100ms, and block
+                    mining in 1-3 seconds.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ How It Works ═══ -->
+    <section class="container" style="padding-bottom: 80px;">
+        <div class="section-header">
+            <div class="overline">
+                <i data-lucide="git-branch" style="width:16px;height:16px;"></i>
+                Process
+            </div>
+            <h2>How It Works</h2>
+            <p>Three simple steps to a verifiable, blockchain-secured vote.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="glass-card step-card">
+                <div class="step-number">1</div>
+                <h3>Authenticate</h3>
+                <p>Voters log in with their unique ID. Admins authenticate via secure Supabase credentials with role
+                    verification.</p>
+            </div>
+
+            <div class="glass-card step-card">
+                <div class="step-number">2</div>
+                <h3>Select & Submit</h3>
+                <p>Browse candidates, make your choice, and confirm. The system verifies your eligibility before
+                    proceeding.</p>
+            </div>
+
+            <div class="glass-card step-card">
+                <div class="step-number">3</div>
+                <h3>Blockchain Sealed</h3>
+                <p>Your vote is mined into a new block with proof-of-work. You receive a SHA-256 hash as your
+                    tamper-proof receipt.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="container" style="padding-bottom: 40px;">
+        <div class="glass-card no-hover text-center" style="padding: 60px 40px; border-color: var(--border-accent);">
+            <h2 style="font-size: 1.8rem; margin-bottom: 12px;">Ready to Vote?</h2>
+            <p class="text-muted" style="max-width: 480px; margin: 0 auto 28px; font-size: 0.95rem;">
+                Your vote matters. Cast it securely with blockchain-backed verification that ensures every ballot
+                counts.
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                <a href="/voter" class="btn btn-primary btn-lg">
+                    <i data-lucide="check-square"></i> Start Voting
+                </a>
+                <a href="/admin" class="btn btn-secondary btn-lg">
+                    <i data-lucide="external-link"></i> View Dashboard
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="footer container">
+        <p>Built with <a href="#">Python</a>, <a href="#">Flask</a>, <a href="#">Blockchain</a> &amp; <a
+                href="#">Supabase</a> &nbsp;·&nbsp; BlockVote E-Voting System</p>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Floating particles
+        (function () {
+            const container = document.getElementById('particles');
+            const colors = ['rgba(99,102,241,0.25)', 'rgba(139,92,246,0.2)', 'rgba(6,182,212,0.15)'];
+            for (let i = 0; i < 35; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = 2 + Math.random() * 4;
+                p.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation-duration: ${10 + Math.random() * 15}s;
+                    animation-delay: ${Math.random() * 12}s;
+                `;
+                container.appendChild(p);
+            }
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Admin Dashboard — Manage candidates, register voters, and monitor real-time blockchain election results.">
+    <title>Admin Dashboard — BlockVote</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         LOGIN SCREEN
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="login-screen">
+        <nav class="navbar">
+            <a href="/" class="navbar-brand">
+                <div class="brand-icon"><i data-lucide="shield" stroke-width="2.5"></i></div>
+                <span>BlockVote Admin</span>
+            </a>
+            <ul class="navbar-links">
+                <li><a href="/"><i data-lucide="home"></i> <span>Home</span></a></li>
+                <li><a href="/voter"><i data-lucide="check-square"></i> <span>Vote Now</span></a></li>
+            </ul>
+        </nav>
+
+        <div class="voter-container">
+            <div class="voter-header">
+                <h1><span class="gradient-text">Admin Login</span></h1>
+                <p>Enter your credentials to access the election dashboard</p>
+            </div>
+
+            <div class="glass-card login-card">
+                <div id="login-alert"></div>
+                <form id="admin-login-form" autocomplete="off">
+                    <div class="form-group">
+                        <label class="form-label" for="admin-email">
+                            <i data-lucide="mail"></i> Email Address
+                        </label>
+                        <input type="email" id="admin-email" class="form-control" placeholder="admin@evoting.com"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="admin-password">
+                            <i data-lucide="lock"></i> Password
+                        </label>
+                        <input type="password" id="admin-password" class="form-control" placeholder="Enter password"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="login-btn">
+                        <i data-lucide="log-in"></i> Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         DASHBOARD
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="dashboard-screen" class="dashboard-layout" style="display:none;">
+
+        <!-- ── Sidebar ── -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="s-icon"><i data-lucide="shield" stroke-width="2.5"></i></div>
+                <div class="s-text">
+                    <h3>BlockVote</h3>
+                    <p id="admin-email-display">admin@evoting.com</p>
+                </div>
+            </div>
+
+            <div class="sidebar-section-label">Dashboard</div>
+            <ul class="sidebar-nav">
+                <li><a href="#" class="active" data-section="overview">
+                        <i data-lucide="layout-dashboard"></i> Overview
+                    </a></li>
+                <li><a href="#" data-section="candidates">
+                        <i data-lucide="users"></i> Candidates
+                    </a></li>
+                <li><a href="#" data-section="voters">
+                        <i data-lucide="user-check"></i> Voters
+                    </a></li>
+            </ul>
+
+            <div class="sidebar-section-label">Analytics</div>
+            <ul class="sidebar-nav">
+                <li><a href="#" data-section="results">
+                        <i data-lucide="bar-chart-3"></i> Results
+                    </a></li>
+                <li><a href="#" data-section="blockchain">
+                        <i data-lucide="link"></i> Blockchain
+                    </a></li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <ul class="sidebar-nav" style="padding:0;">
+                    <li><a href="#" id="logout-btn" class="danger">
+                            <i data-lucide="log-out"></i> Logout
+                        </a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ── Main Content ── -->
+        <main class="main-content">
+
+            <!-- ══ OVERVIEW ══ -->
+            <div class="panel active" id="panel-overview">
+                <div class="page-header">
+                    <div class="ph-text">
+                        <h1>Dashboard Overview</h1>
+                        <p>Monitor the election in real-time</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="loadOverview()">
+                        <i data-lucide="refresh-cw"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="stats-row" id="overview-stats">
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon indigo"><i data-lucide="users"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-candidates">—</div>
+                            <div class="stat-label">Candidates</div>
+                        </div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon cyan"><i data-lucide="user-check"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-voters">—</div>
+                            <div class="stat-label">Voters</div>
+                        </div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon emerald"><i data-lucide="check-circle"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-voted">—</div>
+                            <div class="stat-label">Votes Cast</div>
+                        </div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <div class="stat-icon amber"><i data-lucide="percent"></i></div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="stat-turnout">—</div>
+                            <div class="stat-label">Turnout</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-title">
+                    <i data-lucide="bar-chart-3"></i> Quick Results
+                </div>
+                <div id="overview-results" class="results-grid"></div>
+            </div>
+
+            <!-- ══ CANDIDATES ══ -->
+            <div class="panel" id="panel-candidates">
+                <div class="page-header">
+                    <div class="ph-text">
+                        <h1>Manage Candidates</h1>
+                        <p>Add and view election candidates</p>
+                    </div>
+                </div>
+
+                <div class="glass-card no-hover" style="margin-bottom:24px;">
+                    <div class="panel-title" style="margin-bottom:16px;">
+                        <i data-lucide="user-plus"></i> Add New Candidate
+                    </div>
+                    <div id="candidate-alert"></div>
+                    <form id="add-candidate-form">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                            <div class="form-group">
+                                <label class="form-label" for="cand-name">
+                                    <i data-lucide="user"></i> Candidate Name
+                                </label>
+                                <input type="text" id="cand-name" class="form-control" placeholder="Full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cand-party">
+                                    <i data-lucide="flag"></i> Party / Affiliation
+                                </label>
+                                <input type="text" id="cand-party" class="form-control" placeholder="Party name"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="cand-desc">
+                                <i data-lucide="file-text"></i> Description
+                            </label>
+                            <textarea id="cand-desc" class="form-control" rows="2"
+                                placeholder="Brief candidate description"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i data-lucide="plus"></i> Add Candidate
+                        </button>
+                    </form>
+                </div>
+
+                <div class="panel-title"><i data-lucide="list"></i> All Candidates</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Party</th>
+                                <th>Description</th>
+                                <th>Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidates-tbody">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted" style="padding:48px;">Loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ══ VOTERS ══ -->
+            <div class="panel" id="panel-voters">
+                <div class="page-header">
+                    <div class="ph-text">
+                        <h1>Manage Voters</h1>
+                        <p>Register and monitor voter participation</p>
+                    </div>
+                </div>
+
+                <div class="glass-card no-hover" style="margin-bottom:24px;">
+                    <div class="panel-title" style="margin-bottom:16px;">
+                        <i data-lucide="user-plus"></i> Register New Voter
+                    </div>
+                    <div id="voter-alert"></div>
+                    <form id="add-voter-form">
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+                            <div class="form-group">
+                                <label class="form-label" for="voter-id-input">
+                                    <i data-lucide="hash"></i> Voter ID
+                                </label>
+                                <input type="text" id="voter-id-input" class="form-control" placeholder="e.g. V011"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="voter-name-input">
+                                    <i data-lucide="user"></i> Full Name
+                                </label>
+                                <input type="text" id="voter-name-input" class="form-control" placeholder="Full name"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="voter-email-input">
+                                    <i data-lucide="mail"></i> Email
+                                </label>
+                                <input type="email" id="voter-email-input" class="form-control"
+                                    placeholder="voter@example.com" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i data-lucide="plus"></i> Register Voter
+                        </button>
+                    </form>
+                </div>
+
+                <div class="panel-title"><i data-lucide="list"></i> Registered Voters</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Voter ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="voters-tbody">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted" style="padding:48px;">Loading…</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ══ RESULTS ══ -->
+            <div class="panel" id="panel-results">
+                <div class="page-header">
+                    <div class="ph-text">
+                        <h1>Election Results</h1>
+                        <p>Live results and voter turnout analytics</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="loadResults()">
+                        <i data-lucide="refresh-cw"></i> Refresh
+                    </button>
+                </div>
+
+                <!-- Turnout Ring -->
+                <div class="glass-card no-hover turnout-widget">
+                    <div class="turnout-ring">
+                        <svg viewBox="0 0 160 160">
+                            <defs>
+                                <linearGradient id="turnoutGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="50%" stop-color="#8b5cf6" />
+                                    <stop offset="100%" stop-color="#06b6d4" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="ring-bg" cx="80" cy="80" r="70" />
+                            <circle class="ring-fill" id="turnout-ring-fill" cx="80" cy="80" r="70" />
+                        </svg>
+                        <div class="turnout-center">
+                            <span class="t-value" id="turnout-percent">0%</span>
+                            <span class="t-label">Turnout</span>
+                        </div>
+                    </div>
+                    <div class="turnout-stats">
+                        <div class="ts-item">
+                            <div class="ts-value" id="result-voted">0</div>
+                            <div class="ts-label">Voted</div>
+                        </div>
+                        <div class="ts-item">
+                            <div class="ts-value" id="result-registered">0</div>
+                            <div class="ts-label">Registered</div>
+                        </div>
+                        <div class="ts-item">
+                            <div class="ts-value" id="result-total-votes">0</div>
+                            <div class="ts-label">Total Votes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-title"><i data-lucide="bar-chart-3"></i> Candidate Results</div>
+                <div id="results-container" class="results-grid"></div>
+            </div>
+
+            <!-- ══ BLOCKCHAIN ══ -->
+            <div class="panel" id="panel-blockchain">
+                <div class="page-header">
+                    <div class="ph-text">
+                        <h1>Blockchain Status</h1>
+                        <p>Validate chain integrity and inspect blocks</p>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="loadBlockchain()">
+                        <i data-lucide="refresh-cw"></i> Validate
+                    </button>
+                </div>
+
+                <div id="chain-status"></div>
+                <div class="panel-title" style="margin-top:24px;"><i data-lucide="boxes"></i> Chain Blocks</div>
+                <div id="chain-blocks"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>
